@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - E-Commerce Website</title>
+    <style>
+        /* Basic CSS Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .cart-section {
+            padding: 20px;
+            background-color: #fff;
+            max-width: 900px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .product-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .product-card p {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+            padding: 8px 16px;
+            font-size: 14px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .checkout-btn {
+            background-color: #28a745;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin-top: 20px;
+        }
+
+        .checkout-btn:hover {
+            background-color: #218838;
+        }
+
+    </style>
+</head>
+<body onload="loadCart()">
+    <!-- Header Section -->
+    <header>
+        <div class="logo">ShopEase</div>
+        <div class="header-actions">
+            <button id="cartBtn" class="btn">Cart (0)</button>
+         
+    </header>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <h2>Your Cart</h2>
+        <div id="cartItems"></div>
+        <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        // Function to load cart items
+        function loadCart() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p>Your cart is empty.</p>';
+            } else {
+                cartItemsDiv.innerHTML = '';
+                cart.forEach(item => {
+                    const productDiv = document.createElement('div');
+                    productDiv.classList.add('product-card');
+                    productDiv.innerHTML = `
+                        <h3>${item}</h3>
+                        <p>Price: ₹500</p>  <!-- Add the price dynamically if available -->
+                        <button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button>
+                    `;
+                    cartItemsDiv.appendChild(productDiv);
+                });
+            }
+            updateCartBtn();
+        }
+
+        // Function to remove item from cart
+        function removeFromCart(productName) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = cart.filter(item => item !== productName);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        // Checkout function
+        function checkout() {
+            alert('Proceeding to Checkout...');
+        }
+
+        // Function to update cart button count
+        function updateCartBtn() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            document.getElementById('cartBtn').innerText = `Cart (${cart.length})`;
+        }
+    </script>
+</body>
+</html>

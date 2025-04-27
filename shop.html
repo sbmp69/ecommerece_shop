@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - E-Commerce Website</title>
+    <link rel="stylesheet" href="shopstyles.css"> <!-- External CSS link -->
+</head>
+<body onload="initializeCart()">
+    <!-- Header Section -->
+    <header>
+        <div class="logo">ShopEase</div>
+        <a href="cart.html"><button id="cartBtn" class="btn">Cart</button></a>
+        <a href="wishlist.html"><button id="wishlistBtn" class="btn">Wishlist</button></a>
+    </header>
+
+    <!-- Search and Filter Section -->
+    <section class="search-bar-container">
+        <div class="filter-dropdown-container">
+            <label for="categoryDropdown">Filter by Category:</label>
+            <select id="categoryDropdown" class="filter-dropdown" onchange="filterProducts()">
+                <option value="all">All Categories</option>
+                <option value="fiction">Fiction</option>
+                <option value="non-fiction">Non-Fiction</option>
+                <option value="mystery">Mystery</option>
+                <option value="technology">Technology</option>
+            </select>
+        </div>
+
+        <div class="filter-dropdown-container">
+            <label for="authorDropdown">Filter by Author:</label>
+            <select id="authorDropdown" class="filter-dropdown" onchange="filterProducts()">
+                <option value="all">All Authors</option>
+                <option value="jk rowling">J.K. Rowling</option>
+                <option value="mary robinette kowal">Mary Robinette Kowal</option>
+                <option value="amish tripathi">Amish Tripathi</option>
+                <option value="chetan bhagat">Chetan Bhagat</option>
+            </select>
+        </div>
+
+        <div class="filter-dropdown-container">
+            <label for="priceDropdown">Filter by Price:</label>
+            <select id="priceDropdown" class="filter-dropdown" onchange="filterProducts()">
+                <option value="all">All Prices</option>
+                <option value="0-300">₹0 - ₹300</option>
+                <option value="301-400">₹301 - ₹400</option>
+                <option value="401-500">₹401 - ₹500</option>
+                <option value="501-600">₹501 - ₹600</option>
+            </select>
+        </div>
+
+        <input type="text" class="search-bar" placeholder="Search for products..." oninput="filterProducts()">
+        <button class="search-btn">Search</button>
+    </section>
+
+    <!-- Shop Products Section -->
+    <section class="products">
+        <div class="product-grid" id="productGrid">
+            <!-- Example Products -->
+            <div class="product-card" data-category="fiction" data-price="300" data-author="jk rowling">
+                <img src="book1.jpg" alt="Harry Potter">
+                <h3>Harry Potter</h3>
+                <p>Author: J.K. Rowling</p>
+                <p>₹300</p>
+                <p>A magical adventure series by J.K. Rowling.</p>
+                <button class="btn add-to-cart-btn" onclick="addToCart('Harry Potter', 300)">Add to Cart</button>
+                <button class="btn add-to-wishlist-btn" onclick="addToWishlist('Harry Potter')">Add to Wishlist</button>
+            </div>
+
+            <div class="product-card" data-category="fiction" data-price="350" data-author="mary robinette kowal">
+                <img src="book2.jpg" alt="The Calculating Stars">
+                <h3>The Calculating Stars</h3>
+                <p>Author: Mary Robinette Kowal</p>
+                <p>₹350</p>
+                <p>A sci-fi novel about a woman's journey to space after a global disaster.</p>
+                <button class="btn add-to-cart-btn" onclick="addToCart('The Calculating Stars', 350)">Add to Cart</button>
+                <button class="btn add-to-wishlist-btn" onclick="addToWishlist('The Calculating Stars')">Add to Wishlist</button>
+            </div>
+
+            <!-- Additional product cards can be added here -->
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize cart and wishlist arrays
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        // Function to initialize cart and update cart button
+        function initializeCart() {
+            updateCartBtn();
+            updateWishlistBtn();
+        }
+
+        // Function to update cart button
+        function updateCartBtn() {
+            const cartBtn = document.getElementById('cartBtn');
+            cartBtn.textContent = `Cart`;
+        }
+
+        // Function to update wishlist button
+        function updateWishlistBtn() {
+            const wishlistBtn = document.getElementById('wishlistBtn');
+            wishlistBtn.textContent = `Wishlist `;
+        }
+
+        // Function to add product to cart
+        function addToCart(productName, price) {
+            if (!cart.some(item => item.name === productName)) {
+                cart.push({ name: productName, price: price });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(productName + " added to cart!");
+                updateCartBtn();
+            } else {
+                alert(productName + " is already in the cart.");
+            }
+        }
+
+        // Function to add product to wishlist
+        function addToWishlist(productName) {
+            if (!wishlist.includes(productName)) {
+                wishlist.push(productName);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                alert(productName + " added to wishlist!");
+                updateWishlistBtn();
+            } else {
+                alert(productName + " is already in the wishlist.");
+            }
+        }
+
+        // Filtering function for products
+        function filterProducts() {
+            const categoryFilter = document.getElementById('categoryDropdown').value.toLowerCase();
+            const authorFilter = document.getElementById('authorDropdown').value.toLowerCase();
+            const priceFilter = document.getElementById('priceDropdown').value;
+            const searchQuery = document.querySelector('.search-bar').value.toLowerCase();
+
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(product => {
+                const category = product.getAttribute('data-category').toLowerCase();
+                const author = product.querySelector('p:nth-of-type(1)').textContent.toLowerCase();
+                const priceText = product.querySelector('p:nth-of-type(2)').textContent.replace('₹', '').trim();
+                const price = parseInt(priceText);
+                const productName = product.querySelector('h3').textContent.toLowerCase();
+
+                let priceMatch = false;
+                if (priceFilter === 'all') {
+                    priceMatch = true;
+                } else {
+                    const [min, max] = priceFilter.split('-').map(Number);
+                    priceMatch = price >= min && price <= max;
+                }
+
+                const categoryMatch = categoryFilter === 'all' || category === categoryFilter;
+                const authorMatch = authorFilter === 'all' || author.includes(authorFilter);
+                const searchMatch = productName.includes(searchQuery);
+
+                if (categoryMatch && authorMatch && priceMatch && searchMatch) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        // Add event listeners to filters and search
+        document.getElementById('categoryDropdown').addEventListener('change', filterProducts);
+        document.getElementById('authorDropdown').addEventListener('change', filterProducts);
+        document.getElementById('priceDropdown').addEventListener('change', filterProducts);
+        document.querySelector('.search-bar').addEventListener('input', filterProducts);
+    </script>
+</body>
+</html>

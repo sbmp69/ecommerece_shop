@@ -1,0 +1,157 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Georgia', serif;
+    background-color: #343a40;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #343a40;
+    padding: 1rem 2rem;
+    color: white;
+}
+
+header .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+header .btn {
+    padding: 0.5rem 1rem;
+    background-color: #ffc107;
+    color: #343a40;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* Search Bar */
+.search-bar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #fff;
+}
+
+.search-bar {
+    flex-grow: 1;
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.search-btn {
+    padding: 0.8rem 1.5rem;
+    background-color: #ffc107;
+    color: #343a40;
+    border: none;
+    border-radius: 5px;
+}
+
+/* Dropdown */
+.dropdown select {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Products Section */
+.products {
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.products h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #343a40;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.product-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.product-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1.5rem;
+}
+
+.product-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #343a40;
+}
+
+.product-card p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #6c757d;
+}
+
+.product-card .btn {
+    padding: 0.5rem 1rem;
+    background-color: #343a40;
+    color: #ffc107;
+    text-decoration: none;
+    border-radius: 5px;
+}
+/* Cart Button */
+/* Cart Button */
+#cartBtn {
+    position: fixed;
+    top: 20px;
+    right: 250px;
+    width: 120px; /* Increased width for rectangular shape */
+    height: 30px; /* Adjust height to make it more rectangular */
+    background-color: #ffc107;
+    color: white;
+    border-radius: 5px; /* Apply slight rounding for a smooth rectangle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px; /* Adjust font size */
+}
+
+#cartBtn {
+    top: 20px;
+    right: 135px;
+    width: 100px; /* Adjust width for mobile-friendly design */
+    height: 35px; /* Keep the height consistent */
+}
