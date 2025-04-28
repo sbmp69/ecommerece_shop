@@ -1,0 +1,40 @@
+<?php
+// Connect to database
+$servername = "localhost"; // database server
+$username = "root"; // database username (default root for localhost)
+$password = ""; // database password (empty for localhost)
+$database = "your_database_name"; // your database name
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Check if form submitted
+if (isset($_POST['submit'])) {
+
+    // Get form values
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $pass = $_POST['pass'];
+    $gender = $_POST['gender'];
+    $country = $_POST['country'];
+    $address = $_POST['address'];
+
+    // Insert into database
+    $sql = "INSERT INTO users (name, email, password, gender, country, address) 
+            VALUES ('$name', '$email', '$pass', '$gender', '$country', '$address')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Registration successful!";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+
+}
+
+// Close connection
+$conn->close();
+?>
