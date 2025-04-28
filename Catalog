@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Catalogue with Cart and Order Form</title>
+    <style>
+        .product {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px;
+            width: 250px;
+            display: inline-block;
+            vertical-align: top;
+            text-align: center;
+        }
+        #cart, #orderForm {
+            margin-top: 30px;
+            border-top: 2px solid #000;
+            padding-top: 20px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input, textarea {
+            display: block;
+            margin-bottom: 10px;
+            width: 300px;
+            padding: 8px;
+        }
+        button {
+            padding: 8px 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Our Products</h1>
+
+    <!-- Search Bar -->
+    <input type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()">
+    <br><br>
+
+    <!-- Product List -->
+    <div id="productList">
+
+        <div class="product">
+            <h3>iPhone 15</h3>
+            <p>Price: ₹80,000</p>
+            <button onclick="addToCart('iPhone 15', 80000)">Add to cart</button>
+        </div>
+
+        <div class="product">
+            <h3>Sony Headphones</h3>
+            <p>Price: ₹15,000</p>
+            <button onclick="addToCart('Sony Headphones', 15000)">Add to cart</button>
+        </div>
+
+        <div class="product">
+            <h3>Harry Potter Book</h3>
+            <p>Price: ₹500</p>
+            <button onclick="addToCart('Harry Potter Book', 500)">Add to cart</button>
+        </div>
+
+        <div class="product">
+            <h3>Adidas Shoes</h3>
+            <p>Price: ₹5,000</p>
+            <button onclick="addToCart('Adidas Shoes', 5000)">Add to cart</button>
+        </div>
+
+    </div>
+
+    <!-- Cart Section -->
+    <div id="cart">
+        <h2>Your Cart</h2>
+        <ul id="cartItems"></ul>
+    </div>
+
+    <!-- Order Form Section -->
+    <div id="orderForm">
+        <h2>Order Details</h2>
+        <form onsubmit="submitOrder(event)">
+            <input type="text" id="name" placeholder="Enter your name" required>
+            <input type="text" id="address" placeholder="Enter your address" required>
+            <input type="text" id="contact" placeholder="Enter your contact number" required>
+            <textarea id="note" placeholder="Any special notes..." rows="4"></textarea>
+            <button type="submit">Place Order</button>
+        </form>
+    </div>
+
+    <script>
+        var cart = [];
+
+        function addToCart(productName, price) {
+            cart.push({ name: productName, price: price });
+            updateCart();
+        }
+
+        function updateCart() {
+            var cartItemsList = document.getElementById("cartItems");
+            cartItemsList.innerHTML = "";
+
+            if (cart.length === 0) {
+                cartItemsList.innerHTML = "<li>Cart is empty.</li>";
+            } else {
+                for (var i = 0; i < cart.length; i++) {
+                    var item = document.createElement("li");
+                    item.innerHTML = cart[i].name + " - ₹" + cart[i].price;
+                    cartItemsList.appendChild(item);
+                }
+            }
+        }
+
+        function searchProducts() {
+            var input = document.getElementById("searchInput").value.toLowerCase();
+            var products = document.getElementsByClassName("product");
+
+            for (var i = 0; i < products.length; i++) {
+                var productName = products[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
+                if (productName.includes(input)) {
+                    products[i].style.display = "inline-block";
+                } else {
+                    products[i].style.display = "none";
+                }
+            }
+        }
+
+        function submitOrder(event) {
+            event.preventDefault(); // stop form from refreshing page
+
+            if (cart.length === 0) {
+                alert("Your cart is empty! Add some products first.");
+                return;
+            }
+
+            var name = document.getElementById("name").value;
+            var address = document.getElementById("address").value;
+            var contact = document.getElementById("contact").value;
+            var note = document.getElementById("note").value;
+
+            var orderSummary = "Order placed!\n\nName: " + name + "\nAddress: " + address +
+                "\nContact: " + contact + "\nNote: " + note + "\n\nProducts:\n";
+
+            for (var i = 0; i < cart.length; i++) {
+                orderSummary += "- " + cart[i].name + " (₹" + cart[i].price + ")\n";
+            }
+
+            alert(orderSummary);
+
+            // Reset cart and form
+            cart = [];
+            updateCart();
+            document.querySelector("form").reset();
+        }
+    </script>
+
+</body>
+</html>
